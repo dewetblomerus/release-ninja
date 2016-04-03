@@ -13,7 +13,7 @@ Rails.application.configure do
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
 
-  # Don't care if the mailer can't send.
+  # Set true if you want to send emails from development.
   config.action_mailer.raise_delivery_errors = false
 
   # Print deprecation notices to the Rails logger.
@@ -52,9 +52,19 @@ Rails.application.configure do
       port: port
   }
 
+  smtp_address = ENV.fetch('SMTP_ADDRESS', 'localhost')
+  smtp_port = ENV.fetch('SMTP_PORT', 1025)
+  smtp_domain = ENV.fetch('SMTP_DOMAIN', 'therelease.ninja')
+  smtp_username = ENV.fetch('SMTP_USERNAME', '')
+  smtp_password = ENV.fetch('SMTP_PASSWORD', '')
+
   config.action_mailer.smtp_settings = {
-      address: "localhost",
-      port: 1025,
-      domain: "therelease.ninja"
+    address:              smtp_address,
+    port:                 smtp_port,
+    domain:               smtp_domain,
+    user_name:            smtp_username,
+    password:             smtp_password,
+    authentication:       'login',
+    enable_starttls_auto: true
   }
 end
